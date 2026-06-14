@@ -12,21 +12,40 @@ type AuthContextType = {
   logout: () => void;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 type AuthProviderProps = {
   children: ReactNode;
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser);
+    } catch {
+      localStorage.removeItem("user");
+      return null;
+    }
+  });
 
   const login = (userData: User) => {
     setUser(userData);
+
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
+
+    localStorage.removeItem("user");
   };
 
   const value: AuthContextType = {
@@ -39,12 +58,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error("useAuth must be used inside AuthProvider");
+    throw new Error("useAuth must be used within AuthProvider");
   }
 
   return context;

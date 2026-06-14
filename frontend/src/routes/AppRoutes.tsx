@@ -2,13 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/public/Login";
 
-import AdminDashboard from "../pages/admin/Dashboard";
-import NgoDashboard from "../pages/ngo/Dashboard";
-import DonorDashboard from "../pages/donor/Dashboard";
-
-import ProtectedRoute from "./ProtectedRoute";
-
-import { ROLES } from "../constants/roles";
+import AdminRoutes from "./AdminRoutes";
+import NgoRoutes from "./NgoRoutes";
+import DonorRoutes from "./DonorRoutes";
 
 const AppRoutes = () => {
   return (
@@ -17,32 +13,11 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute allowedRole={ROLES.ADMIN}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/admin/*" element={<AdminRoutes />} />
 
-      <Route
-        path="/ngo/dashboard"
-        element={
-          <ProtectedRoute allowedRole={ROLES.NGO}>
-            <NgoDashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/ngo/*" element={<NgoRoutes />} />
 
-      <Route
-        path="/donor/dashboard"
-        element={
-          <ProtectedRoute allowedRole={ROLES.DONOR}>
-            <DonorDashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/donor/*" element={<DonorRoutes />} />
 
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
     </Routes>
