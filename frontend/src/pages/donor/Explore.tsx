@@ -12,7 +12,7 @@ import {
   Leaf,
   Home,
   GraduationCap,
-  ArrowRight,
+  //   ArrowRight,
 } from "lucide-react";
 
 type NGO = {

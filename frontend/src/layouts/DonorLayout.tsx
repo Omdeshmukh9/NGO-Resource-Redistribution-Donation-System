@@ -78,7 +78,7 @@ export default function DonorLayout() {
 
       <aside
         className={`
-          fixed md:static z-50
+          fixed md:sticky top-0 left-0 z-50
           h-screen bg-white border-r border-black/5
           transition-all duration-300
 

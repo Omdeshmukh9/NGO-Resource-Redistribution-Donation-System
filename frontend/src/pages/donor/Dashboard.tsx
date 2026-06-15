@@ -1,4 +1,4 @@
-import { Heart, CheckCircle, Clock } from "lucide-react";
+import { CheckCircle, Clock } from "lucide-react";
 
 const stats = [
   {
@@ -86,88 +86,83 @@ const updates = [
 
 export default function Dashboard() {
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-
+    <div className="space-y-6 p-6 bg-[#FAFBF8] min-h-full">
+      {/* Header */}
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-[#1a2e1d]">
+        <h1 className="font-bold text-[#1a2e1d]" style={{ fontSize: "1.6rem" }}>
           Donor Dashboard
         </h1>
-
-        <p className="text-gray-500 mt-1">Track your donations and impact.</p>
+        <p className="text-[#6b7c70] text-sm mt-1">
+          Track your donations and impact.
+        </p>
       </div>
 
       {/* Stats */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {stats.map((item) => (
           <div
             key={item.title}
-            className="bg-white rounded-2xl p-5 border border-black/5 shadow-sm"
+            className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-sm"
           >
-            <p className="text-sm text-gray-500">{item.title}</p>
-
-            <h3 className="text-2xl font-bold mt-2">{item.value}</h3>
-
-            <p className="text-xs text-[#2F6B3D] mt-1">{item.subtitle}</p>
+            <p className="text-xs text-[#6b7c70]">{item.title}</p>
+            <h3 className="text-2xl font-bold text-[#1a2e1d] mt-2">
+              {item.value}
+            </h3>
+            <p className="text-xs text-[#2F6B3D] mt-1 font-medium">
+              {item.subtitle}
+            </p>
           </div>
         ))}
       </div>
 
       {/* Main Grid */}
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Section */}
-
+        {/* LEFT SIDE */}
         <div className="lg:col-span-2 space-y-6">
           {/* Campaigns */}
-
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm">
-            <div className="p-5 border-b border-black/5">
-              <h2 className="font-semibold">Recommended Campaigns</h2>
+          <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06]">
+            <div className="p-5 border-b border-black/[0.06]">
+              <h2 className="font-semibold text-[#1a2e1d]">
+                Recommended Campaigns
+              </h2>
             </div>
 
-            <div className="divide-y divide-black/5">
-              {campaigns.map((campaign) => {
-                const progress = Math.round(
-                  (campaign.raised / campaign.goal) * 100,
-                );
+            <div className="divide-y divide-black/[0.04]">
+              {campaigns.map((c) => {
+                const progress = Math.round((c.raised / c.goal) * 100);
 
                 return (
-                  <div key={campaign.id} className="p-5">
-                    <div className="flex flex-col md:flex-row md:justify-between gap-2">
+                  <div key={c.id} className="p-5">
+                    <div className="flex justify-between gap-3">
                       <div>
-                        <h3 className="font-medium">{campaign.title}</h3>
-
-                        <p className="text-sm text-gray-500 mt-1">
-                          {campaign.ngo}
-                        </p>
+                        <h3 className="font-medium text-[#1a2e1d]">
+                          {c.title}
+                        </h3>
+                        <p className="text-sm text-[#6b7c70] mt-1">{c.ngo}</p>
                       </div>
 
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                      <div className="flex items-center gap-1 text-xs text-[#6b7c70]">
                         <Clock size={12} />
-                        {campaign.daysLeft} days left
+                        {c.daysLeft} days left
                       </div>
                     </div>
 
+                    {/* Progress */}
                     <div className="mt-4">
                       <div className="h-2 rounded-full bg-[#EAF4EC] overflow-hidden">
                         <div
                           className="h-full bg-[#2F6B3D]"
-                          style={{
-                            width: `${progress}%`,
-                          }}
+                          style={{ width: `${progress}%` }}
                         />
                       </div>
 
-                      <div className="flex justify-between mt-2 text-sm">
-                        <span>₹{campaign.raised.toLocaleString()}</span>
-
+                      <div className="flex justify-between mt-2 text-sm text-[#6b7c70]">
+                        <span>₹{c.raised.toLocaleString()}</span>
                         <span>{progress}%</span>
                       </div>
                     </div>
 
-                    <button className="mt-4 w-full md:w-auto bg-[#2F6B3D] text-white px-4 py-2 rounded-lg">
+                    <button className="mt-4 bg-[#2F6B3D] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#275c34]">
                       Donate Now
                     </button>
                   </div>
@@ -176,27 +171,27 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Recent Donations */}
-
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm">
-            <div className="p-5 border-b border-black/5">
-              <h2 className="font-semibold">Recent Donations</h2>
+          {/* Donations */}
+          <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06]">
+            <div className="p-5 border-b border-black/[0.06]">
+              <h2 className="font-semibold text-[#1a2e1d]">Recent Donations</h2>
             </div>
 
-            <div className="divide-y divide-black/5">
-              {donations.map((donation) => (
+            <div className="divide-y divide-black/[0.04]">
+              {donations.map((d) => (
                 <div
-                  key={donation.id}
-                  className="p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-3"
+                  key={d.id}
+                  className="p-5 flex justify-between items-center"
                 >
                   <div>
-                    <h4 className="font-medium">{donation.campaign}</h4>
-
-                    <p className="text-sm text-gray-500">{donation.date}</p>
+                    <h4 className="font-medium text-[#1a2e1d]">{d.campaign}</h4>
+                    <p className="text-sm text-[#6b7c70]">{d.date}</p>
                   </div>
 
                   <div className="text-right">
-                    <div className="font-semibold">{donation.amount}</div>
+                    <div className="font-semibold text-[#1a2e1d]">
+                      {d.amount}
+                    </div>
 
                     <div className="flex items-center justify-end gap-1 text-xs text-green-600">
                       <CheckCircle size={12} />
@@ -209,36 +204,30 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Right Section */}
-
+        {/* RIGHT SIDE */}
         <div className="space-y-6">
-          {/* NGO Updates */}
-
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm">
-            <div className="p-5 border-b border-black/5">
-              <h2 className="font-semibold">NGO Updates</h2>
+          {/* Updates */}
+          <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06]">
+            <div className="p-5 border-b border-black/[0.06]">
+              <h2 className="font-semibold text-[#1a2e1d]">NGO Updates</h2>
             </div>
 
-            <div className="divide-y divide-black/5">
-              {updates.map((update) => (
-                <div key={update.id} className="p-5">
-                  <h4 className="font-medium">{update.ngo}</h4>
-
-                  <p className="text-sm text-gray-600 mt-2">{update.text}</p>
+            <div className="divide-y divide-black/[0.04]">
+              {updates.map((u) => (
+                <div key={u.id} className="p-5">
+                  <h4 className="font-medium text-[#1a2e1d]">{u.ngo}</h4>
+                  <p className="text-sm text-[#6b7c70] mt-2">{u.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* CTA */}
-
           <div className="bg-[#2F6B3D] text-white rounded-2xl p-5">
-            <Heart size={24} className="mb-3" />
+            <h3 className="font-semibold text-lg">Make a Difference Today</h3>
 
-            <h3 className="font-semibold">Make a Difference Today</h3>
-
-            <p className="text-sm text-green-100 mt-2">
-              Explore verified campaigns and support causes you care about.
+            <p className="text-sm text-[#a8d4b4] mt-2">
+              Explore verified campaigns and support meaningful causes.
             </p>
 
             <button className="mt-4 w-full bg-white text-[#2F6B3D] py-2 rounded-lg font-medium">
