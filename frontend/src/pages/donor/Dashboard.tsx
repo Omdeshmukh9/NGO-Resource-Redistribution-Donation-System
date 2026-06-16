@@ -86,12 +86,10 @@ const updates = [
 
 export default function Dashboard() {
   return (
-    <div className="space-y-6 p-6 bg-[#FAFBF8] min-h-full">
+    <div className="space-y-6  bg-[#FAFBF8] min-h-full">
       {/* Header */}
       <div>
-        <h1 className="font-bold text-[#1a2e1d]" style={{ fontSize: "1.6rem" }}>
-          Donor Dashboard
-        </h1>
+        <h1 className="font-bold text-2xl text-[#1a2e1d]">Donor Dashboard</h1>
         <p className="text-[#6b7c70] text-sm mt-1">
           Track your donations and impact.
         </p>

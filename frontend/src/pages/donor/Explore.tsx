@@ -265,7 +265,7 @@ export default function ExploreNGOs() {
   }, [search, activeCategory, onlyVerified, minRating, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#FAFBF8] p-4 md:p-6">
+    <div className="min-h-screen bg-[#FAFBF8]">
       {/* HEADER */}
       <h1 className="text-2xl font-bold">Explore NGOs</h1>
       <p className="text-sm text-gray-500 mb-4">
