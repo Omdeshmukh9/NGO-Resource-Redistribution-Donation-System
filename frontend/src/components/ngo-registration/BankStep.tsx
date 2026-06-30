@@ -5,15 +5,15 @@ export type BankData = {
   bankName: string;
   accountNumber: string;
   ifscCode: string;
-  email: string;
 };
 
 type Props = {
   data: BankData;
   onChange: (data: BankData) => void;
+  errors: Record<string, string>;
 };
 
-export default function BankStep({ data, onChange }: Props) {
+export default function BankStep({ data, onChange, errors }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...data,
@@ -32,48 +32,88 @@ export default function BankStep({ data, onChange }: Props) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* ACCOUNT HOLDER */}
+
         <div>
-          <label className="font-medium block mb-2">Account Holder Name</label>
+          <label className="block mb-2 font-medium">Account Holder Name</label>
 
           <input
             name="accountHolderName"
             value={data.accountHolderName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-4 py-3"
+            placeholder="Helping Hands Foundation"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${
+                errors.accountHolderName ? "border-red-500" : "border-gray-300"
+              }`}
           />
+
+          {errors.accountHolderName && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.accountHolderName}
+            </p>
+          )}
         </div>
 
+        {/* BANK NAME */}
+
         <div>
-          <label className="font-medium block mb-2">Bank Name</label>
+          <label className="block mb-2 font-medium">Bank Name</label>
 
           <input
             name="bankName"
             value={data.bankName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-4 py-3"
+            placeholder="State Bank of India"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.bankName ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.bankName && (
+            <p className="mt-1 text-sm text-red-500">{errors.bankName}</p>
+          )}
         </div>
 
+        {/* ACCOUNT NUMBER */}
+
         <div>
-          <label className="font-medium block mb-2">Account Number</label>
+          <label className="block mb-2 font-medium">Account Number</label>
 
           <input
             name="accountNumber"
             value={data.accountNumber}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-4 py-3"
+            inputMode="numeric"
+            placeholder="123456789012"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.accountNumber ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.accountNumber && (
+            <p className="mt-1 text-sm text-red-500">{errors.accountNumber}</p>
+          )}
         </div>
 
+        {/* IFSC */}
+
         <div>
-          <label className="font-medium block mb-2">IFSC Code</label>
+          <label className="block mb-2 font-medium">IFSC Code</label>
 
           <input
             name="ifscCode"
             value={data.ifscCode}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-4 py-3"
+            onChange={(e) => {
+              e.target.value = e.target.value.toUpperCase();
+              handleChange(e);
+            }}
+            placeholder="SBIN0001234"
+            className={`w-full rounded-xl border px-4 py-3 uppercase outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.ifscCode ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.ifscCode && (
+            <p className="mt-1 text-sm text-red-500">{errors.ifscCode}</p>
+          )}
         </div>
       </div>
     </div>

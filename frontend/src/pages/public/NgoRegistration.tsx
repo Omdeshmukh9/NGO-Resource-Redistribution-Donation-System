@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,13 @@ import DocumentStep, {
 
 import ReviewStep from "../../components/ngo-registration/ReviewStep";
 
+import {
+  validateBasicInfo,
+  validateProfile,
+  validateBank,
+  validateDocuments,
+} from "../../utils/ngoRegistrationValidation";
+
 const steps = ["Basic Info", "Profile", "Bank", "Documents", "Review"];
 
 export default function NgoRegistration() {
@@ -29,29 +36,41 @@ export default function NgoRegistration() {
 
   const [currentStep, setCurrentStep] = useState(0);
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const [basicInfo, setBasicInfo] = useState<BasicInfoData>({
     ngoName: "",
     registrationNumber: "",
     email: "",
     contactNumber: "",
-    ngoType: "",
-    address: "",
   });
 
   const [profile, setProfile] = useState<ProfileData>({
     description: "",
     vision: "",
-    logoUrl: "",
-    coverImageUrl: "",
-    profileImageUrl: "",
-  } as ProfileData);
+    ngoType: "",
+
+    logo: null,
+    coverImage: null,
+    profileImage: null,
+
+    addressLine1: "",
+    addressLine2: "",
+
+    city: "",
+    state: "",
+    country: "",
+    pincode: "",
+
+    latitude: "",
+    longitude: "",
+  });
 
   const [bank, setBank] = useState<BankData>({
     accountHolderName: "",
     bankName: "",
     accountNumber: "",
     ifscCode: "",
-    email: "",
   });
 
   const [documents, setDocuments] = useState<DocumentData>({
@@ -61,33 +80,6 @@ export default function NgoRegistration() {
     cancelledCheque: null,
   });
 
-  const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-    }
-  };
-
-  const handleSubmit = () => {
-    const payload = {
-      basicInfo,
-      profile,
-      bank,
-      documents,
-    };
-
-    console.log(payload);
-
-    alert("NGO Registration Submitted Successfully!");
-
-    navigate("/login");
-  };
-
   useEffect(() => {
     const allowed = sessionStorage.getItem("pendingNgoRegistration");
 
@@ -95,43 +87,122 @@ export default function NgoRegistration() {
       navigate("/register");
     }
   }, [navigate]);
+  const nextStep = () => {
+    let validationErrors: Record<string, string> = {};
 
+    switch (currentStep) {
+      case 0: {
+        const result = validateBasicInfo(basicInfo);
+        validationErrors = result.errors;
+        break;
+      }
+
+      case 1: {
+        const result = validateProfile(profile);
+        validationErrors = result.errors;
+        break;
+      }
+
+      case 2: {
+        const result = validateBank(bank);
+        validationErrors = result.errors;
+        break;
+      }
+
+      case 3: {
+        const result = validateDocuments(documents);
+        validationErrors = result.errors;
+        break;
+      }
+
+      default:
+        break;
+    }
+
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return; // block next step
+    }
+
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const previousStep = () => {
+    setErrors({});
+
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
+    }
+  };
+
+  const handleSubmit = () => {
+    const result = validateDocuments(documents);
+
+    setErrors(result.errors);
+
+    if (!result.valid) {
+      return;
+    }
+
+    const payload = {
+      basicInfo,
+      profile,
+      bank,
+      documents,
+    };
+
+    console.log("FINAL PAYLOAD:", payload);
+
+    alert("NGO Registration Submitted Successfully!");
+
+    sessionStorage.removeItem("pendingNgoRegistration");
+
+    navigate("/login");
+  };
   return (
     <div className="min-h-screen bg-[#F6F8F5] py-10 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-
+        {/* HEADER */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-[#1A2E1D]">
             NGO Registration
           </h1>
-
           <p className="text-gray-500 mt-3">
             Register your NGO to start creating campaigns and receiving
             donations.
           </p>
         </div>
 
-        {/* Progress */}
-
+        {/* STEP INDICATOR */}
         <div className="mb-10">
           <StepIndicator currentStep={currentStep} steps={steps} />
         </div>
 
-        {/* Form */}
+        {/* STEPS */}
 
         {currentStep === 0 && (
-          <BasicInfoStep data={basicInfo} onChange={setBasicInfo} />
+          <BasicInfoStep
+            data={basicInfo}
+            onChange={setBasicInfo}
+            errors={errors}
+          />
         )}
 
         {currentStep === 1 && (
-          <ProfileStep data={profile} onChange={setProfile} />
+          <ProfileStep data={profile} onChange={setProfile} errors={errors} />
         )}
 
-        {currentStep === 2 && <BankStep data={bank} onChange={setBank} />}
+        {currentStep === 2 && (
+          <BankStep data={bank} onChange={setBank} errors={errors} />
+        )}
 
         {currentStep === 3 && (
-          <DocumentStep data={documents} onChange={setDocuments} />
+          <DocumentStep
+            data={documents}
+            onChange={setDocuments}
+            errors={errors}
+          />
         )}
 
         {currentStep === 4 && (
@@ -143,8 +214,7 @@ export default function NgoRegistration() {
           />
         )}
 
-        {/* Footer */}
-
+        {/* FOOTER BUTTONS */}
         <div className="flex justify-between mt-10">
           <button
             onClick={previousStep}

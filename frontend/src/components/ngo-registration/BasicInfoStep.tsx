@@ -5,19 +5,16 @@ export type BasicInfoData = {
   registrationNumber: string;
   email: string;
   contactNumber: string;
-  ngoType: string;
-  address: string;
 };
 
-type BasicInfoStepProps = {
+type Props = {
   data: BasicInfoData;
   onChange: (data: BasicInfoData) => void;
+  errors: Record<string, string>;
 };
 
-export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
+export default function BasicInfoStep({ data, onChange, errors }: Props) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     onChange({
@@ -38,7 +35,7 @@ export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* NGO Name */}
+        {/* NGO NAME */}
 
         <div>
           <label className="block mb-2 font-medium text-gray-700">
@@ -51,11 +48,16 @@ export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
             value={data.ngoName}
             onChange={handleChange}
             placeholder="Helping Hands Foundation"
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#2F6B3D]"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.ngoName ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.ngoName && (
+            <p className="text-red-500 text-sm mt-1">{errors.ngoName}</p>
+          )}
         </div>
 
-        {/* Registration Number */}
+        {/* REGISTRATION NUMBER */}
 
         <div>
           <label className="block mb-2 font-medium text-gray-700">
@@ -68,11 +70,20 @@ export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
             value={data.registrationNumber}
             onChange={handleChange}
             placeholder="REG123456789"
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#2F6B3D]"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${
+                errors.registrationNumber ? "border-red-500" : "border-gray-300"
+              }`}
           />
+
+          {errors.registrationNumber && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.registrationNumber}
+            </p>
+          )}
         </div>
 
-        {/* Email */}
+        {/* EMAIL */}
 
         <div>
           <label className="block mb-2 font-medium text-gray-700">
@@ -85,11 +96,16 @@ export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
             value={data.email}
             onChange={handleChange}
             placeholder="contact@ngo.org"
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#2F6B3D]"
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.email ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
 
-        {/* Phone */}
+        {/* CONTACT NUMBER */}
 
         <div>
           <label className="block mb-2 font-medium text-gray-700">
@@ -101,9 +117,15 @@ export default function BasicInfoStep({ data, onChange }: BasicInfoStepProps) {
             name="contactNumber"
             value={data.contactNumber}
             onChange={handleChange}
-            placeholder="+91 9876543210"
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#2F6B3D]"
+            placeholder="9876543210"
+            maxLength={10}
+            className={`w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-[#2F6B3D]
+              ${errors.contactNumber ? "border-red-500" : "border-gray-300"}`}
           />
+
+          {errors.contactNumber && (
+            <p className="text-red-500 text-sm mt-1">{errors.contactNumber}</p>
+          )}
         </div>
       </div>
     </div>

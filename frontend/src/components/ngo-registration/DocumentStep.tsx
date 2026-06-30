@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import UploadCard from "./UploadCard";
 
 export type DocumentData = {
@@ -12,9 +11,10 @@ export type DocumentData = {
 type Props = {
   data: DocumentData;
   onChange: (data: DocumentData) => void;
+  errors: Record<string, string>;
 };
 
-export default function DocumentStep({ data, onChange }: Props) {
+export default function DocumentStep({ data, onChange, errors }: Props) {
   const [documents, setDocuments] = useState(data);
 
   const updateFile = (key: keyof DocumentData, file: File | null) => {
@@ -40,33 +40,56 @@ export default function DocumentStep({ data, onChange }: Props) {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <UploadCard
-          title="Registration Certificate"
-          description="Government registration certificate"
-          file={documents.registrationCertificate}
-          onChange={(file) => updateFile("registrationCertificate", file)}
-        />
+        <div>
+          <UploadCard
+            title="Registration Certificate"
+            description="Government registration certificate"
+            file={documents.registrationCertificate}
+            onChange={(file) => updateFile("registrationCertificate", file)}
+          />
 
-        <UploadCard
-          title="PAN Card"
-          description="NGO PAN Card"
-          file={documents.panCard}
-          onChange={(file) => updateFile("panCard", file)}
-        />
+          {errors.registrationCertificate && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.registrationCertificate}
+            </p>
+          )}
+        </div>
 
-        <UploadCard
-          title="80G / 12A Certificate"
-          description="Tax exemption certificate (Optional)"
-          file={documents.taxExemptionCertificate}
-          onChange={(file) => updateFile("taxExemptionCertificate", file)}
-        />
+        <div>
+          <UploadCard
+            title="PAN Card"
+            description="NGO PAN Card"
+            file={documents.panCard}
+            onChange={(file) => updateFile("panCard", file)}
+          />
 
-        <UploadCard
-          title="Cancelled Cheque"
-          description="For bank verification"
-          file={documents.cancelledCheque}
-          onChange={(file) => updateFile("cancelledCheque", file)}
-        />
+          {errors.panCard && (
+            <p className="text-red-500 text-sm mt-2">{errors.panCard}</p>
+          )}
+        </div>
+        <div>
+          <UploadCard
+            title="80G / 12A Certificate"
+            description="Tax exemption certificate (Optional)"
+            file={documents.taxExemptionCertificate}
+            onChange={(file) => updateFile("taxExemptionCertificate", file)}
+          />
+        </div>
+
+        <div>
+          <UploadCard
+            title="Cancelled Cheque"
+            description="For bank verification"
+            file={documents.cancelledCheque}
+            onChange={(file) => updateFile("cancelledCheque", file)}
+          />
+
+          {errors.cancelledCheque && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.cancelledCheque}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
