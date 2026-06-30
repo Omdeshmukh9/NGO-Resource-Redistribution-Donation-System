@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 export type User = {
-  email: string;
+  username: string;
   role: string;
 };
 
@@ -38,13 +39,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = (userData: User) => {
     setUser(userData);
-
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-
     localStorage.removeItem("user");
   };
 

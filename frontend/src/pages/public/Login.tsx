@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, Lock, Heart, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { User, Lock, Heart, Eye, EyeOff, ArrowRight } from "lucide-react";
 
 import { MOCK_USERS } from "../../constants/mockUsers";
 import { ROLES } from "../../constants/roles";
@@ -10,13 +10,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     const user = MOCK_USERS.find(
-      (u) => u.email === email && u.password === password,
+      (u) => u.username === username && u.password === password,
     );
 
     if (!user) {
@@ -25,7 +25,7 @@ const Login = () => {
     }
 
     login({
-      email: user.email,
+      username: user.username,
       role: user.role,
     });
 
@@ -93,18 +93,18 @@ const Login = () => {
             </p>
           </div>
 
-          {/* EMAIL */}
+          {/* USERNAME */}
           <div className="mb-4">
             <label className="text-xs font-semibold text-[#1a2e1d]">
-              Email
+              Username
             </label>
             <div className="relative mt-1">
-              <Mail className="absolute left-3 top-3.5 w-4 h-4 text-[#6b7c70]" />
+              <User className="absolute left-3 top-3.5 w-4 h-4 text-[#6b7c70]" />
               <input
                 className="w-full pl-10 pr-3 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2F6B3D]/20"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
           </div>
@@ -147,8 +147,19 @@ const Login = () => {
             Sign in <ArrowRight className="w-4 h-4" />
           </button>
 
-          {/* FOOTER */}
-          <p className="text-center text-xs text-[#6b7c70] mt-6">
+          {/* Register */}
+          <div className="mt-2 text-center">
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className=" text-[#2F6B3D] font-semibold hover:underline"
+            >
+              Create a new account
+            </button>
+          </div>
+
+          {/* Footer */}
+          <p className="text-center text-xs text-[#6b7c70] mt-4">
             Demo login using MOCK_USERS
           </p>
         </div>
