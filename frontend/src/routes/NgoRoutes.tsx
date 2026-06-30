@@ -1,21 +1,27 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import NgoLayout from "../layouts/NgoLayout";
 
 import Dashboard from "../pages/ngo/Dashboard";
+import Campaigns from "../pages/ngo/Campaigns";
+import Requirements from "../pages/ngo/Requirements";
+import Updates from "../pages/ngo/Updates";
+import Documents from "../pages/ngo/Documents";
+import Donors from "../pages/ngo/Donors";
 
-import ProtectedRoute from "./ProtectedRoute";
-import NgoLayout from "../layouts/NgoLayout";
-import { ROLES } from "../constants/roles";
-
-const NgoRoutes = () => {
+export default function NgoRoutes() {
   return (
-    <ProtectedRoute allowedRole={ROLES.NGO}>
-      <Routes>
-        <Route element={<NgoLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-        </Route>
-      </Routes>
-    </ProtectedRoute>
-  );
-};
+    <Routes>
+      <Route element={<NgoLayout />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="campaigns" element={<Campaigns />} />
+        <Route path="requirements" element={<Requirements />} />
+        <Route path="updates" element={<Updates />} />
+        <Route path="documents" element={<Documents />} />
+        <Route path="donors" element={<Donors />} />
 
-export default NgoRoutes;
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="dashboard" />} />
+      </Route>
+    </Routes>
+  );
+}

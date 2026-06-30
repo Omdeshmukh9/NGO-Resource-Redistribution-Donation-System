@@ -75,3 +75,11 @@ Project developed as part of an academic full-stack development project.
 ## License
 
 This project is intended for educational and learning purposes.
+
+## Steps to Run the Frontend apllication
+
+1. git clone https://github.com/Omdeshmukh9/NGO-Resource-Redistribution-Donation-System.git
+2. cd NGO-Resource-Redistribution-Donation-System
+3. cd frontend
+4. npm install
+5. npm run dev
